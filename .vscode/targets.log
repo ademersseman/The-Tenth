@@ -8,7 +8,7 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 # This program built for i386-pc-mingw32
  
 
-# Make data base, printed on Fri Jun 17 11:39:18 2022
+# Make data base, printed on Fri Jun 17 11:48:23 2022
 
 # Variables
 
@@ -35,8 +35,7 @@ CURDIR := c:/Users/Alan De Mersseman/Projects/The Tenth
 # default
 SHELL := sh.exe
 # environment
-WIN 
-DIR = C:\WINDOWS
+WINDIR = C:\WINDOWS
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
@@ -56,7 +55,7 @@ PROGRAMW6432 = C:\Program Files
 # environment
 PROGRAMDATA = C:\ProgramData
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-0d0a82c3-b7de-4a36-bf8d-52028709c293-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-da7a0b34-fd75-441e-a48b-4ad99335ee52-sock
 # environment
 VSCODE_CWD = C:\Users\Alan De Mersseman\AppData\Local\Programs\Microsoft VS Code
 # environment
@@ -84,7 +83,7 @@ ELECTRON_RUN_AS_NODE = 1
 # automatic
 %F = $(notdir $%)
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_12504_GPWTNZJYDZDUYUAY
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_4816_MWPMTREGOCHWGQAR
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
@@ -126,8 +125,7 @@ PROGRAMFILES(X86) = C:\Program Files (x86)
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # environment
-LOCALAPPDATA = C:\Users\Alan De Mersseman\AppData\Loc 
-al
+LOCALAPPDATA = C:\Users\Alan De Mersseman\AppData\Local
 # environment
 PSMODULEPATH = C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules
 # default
@@ -169,8 +167,7 @@ COMSPEC = C:\WINDOWS\system32\cmd.exe
 # default
 MAKEFILES := 
 # automatic
-<F 
- = $(notdir $<)
+<F = $(notdir $<)
 # environment
 LC_ALL = C
 # automatic
@@ -192,7 +189,7 @@ PROCESSOR_LEVEL = 23
 # environment
 FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
 # environment
-VSCODE_PID = 12504
+VSCODE_PID = 4816
 # environment
 USERDOMAIN_ROAMINGPROFILE = ALANSPC
 # variable set hash-table stats:
@@ -208,11 +205,10 @@ USERDOMAIN_ROAMINGPROFILE = ALANSPC
 # C:\Program Files\LLVM\bin (key C:/Program Files/LLVM/bin, mtime 1613433209): 109 files, no impossibilities.
 # C:\WINDOWS\System32\WindowsPowerShell\v1.0\ (key C:/WINDOWS/System32/WindowsPowerShell/v1.0/, mtime 1616200226): 30 files, no impossibilities.
 # C:\Windows\System32\Wbem (key C:/Windows/System32/Wbem, mtime 1647043307): 154 files, no impossibilities.
-# . (key c:/Users/Alan De Mersseman/Projects/The Tenth, mtime 1655419368): 11 files, no impossibilities.
+# . (key c:/Users/Alan De Mersseman/Projects/The Tenth, mtime 1655480820): 12 files, no impossibilities.
 # C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common (key C:/Program Files (x86)/NVIDIA Corporation/PhysX/Common, mtime 1592836757): 10 files, no impossibilities.
 # C:\ProgramData\chocolatey\bin (key C:/ProgramData/chocolatey/bin, mtime 1613596406): 13 files, no impossibilities.
-# C:\Program Fil 
-es\nodejs\ (key C:/Program Files/nodejs/, mtime 1648788910): 13 files, no impossibilities.
+# C:\Program Files\nodejs\ (key C:/Program Files/nodejs/, mtime 1648788910): 13 files, no impossibilities.
 # C:\Program Files (x86)\Java\jre1.8.0_291\bin: could not be stat'd.
 # C:\Users\Alan De Mersseman\AppData\Local\atom\bin (key C:/Users/Alan De Mersseman/AppData/Local/atom/bin, mtime 1592697303): 6 files, no impossibilities.
 # C:\MinGW\bin (key C:/MinGW/bin, mtime 1613437502): 127 files, no impossibilities.
@@ -220,19 +216,17 @@ es\nodejs\ (key C:/Program Files/nodejs/, mtime 1648788910): 13 files, no imposs
 # C:\Users\Alan De Mersseman\AppData\Local\Programs\Microsoft VS Code\bin (key C:/Users/Alan De Mersseman/AppData/Local/Programs/Microsoft VS Code/bin, mtime 1655318429): 4 files, no impossibilities.
 # C:\Windows (key C:/Windows, mtime 1617228549): 113 files, no impossibilities.
 # C:\Users\Alan De Mersseman\AppData\Local\GitHubDesktop\bin (key C:/Users/Alan De Mersseman/AppData/Local/GitHubDesktop/bin, mtime 1615851692): 4 files, no impossibilities.
-# C:\Users\Alan De Mersseman\AppData\Roaming\npm (key C:/Users/Alan De Mersseman/AppData/Roaming/npm, mtime 161361727 
-2): 9 files, no impossibilities.
+# C:\Users\Alan De Mersseman\AppData\Roaming\npm (key C:/Users/Alan De Mersseman/AppData/Roaming/npm, mtime 1613617272): 9 files, no impossibilities.
 # C:\Python39\ (key C:/Python39/, mtime 1613596440): 18 files, no impossibilities.
 # C:\Users\Alan De Mersseman\AppData\Local\Programs\MiKTeX\miktex\bin\x64\ (key C:/Users/Alan De Mersseman/AppData/Local/Programs/MiKTeX/miktex/bin/x64/, mtime 1655323446): 732 files, no impossibilities.
 # C:\Python39\Scripts\ (key C:/Python39/Scripts/, mtime 1614098003): 8 files, no impossibilities.
-# C:\Program Files\Git\cmd (key C:/Program Files/Git/cmd, mtime 1653069329): 8 files, no impos 
-sibilities.
+# C:\Program Files\Git\cmd (key C:/Program Files/Git/cmd, mtime 1653069329): 8 files, no impossibilities.
 # C:\Windows\system32 (key C:/Windows/system32, mtime 1655476330): 2949 files, no impossibilities.
 # C:\Users\Alan De Mersseman\AppData\Local\Microsoft\WindowsApps (key C:/Users/Alan De Mersseman/AppData/Local/Microsoft/WindowsApps, mtime 1655321186): 24 files, no impossibilities.
 # C:\Windows\System32\WindowsPowerShell\v1.0 (key C:/Windows/System32/WindowsPowerShell/v1.0, mtime 1616200226): 30 files, no impossibilities.
 # C:\Program Files (x86)\GnuWin32\bin (key C:/Program Files (x86)/GnuWin32/bin, mtime 1655307018): 5 files, no impossibilities.
 
-# 4383 files, no impossibilities in 24 directories.
+# 4384 files, no impossibilities in 24 directories.
 
 # Implicit Rules
 
@@ -262,8 +256,7 @@ all:
 # automatic
 # ^ := 
 # automatic
-# ? :=  
-
+# ? := 
 # variable set hash-table stats:
 # Load=8/32=25%, Rehash=0, Collisions=1/10=10%
 #  commands to execute (from `makefile', line 2):
@@ -282,8 +275,7 @@ makefile:
 #  Last modified 2022-06-15 20:26:54
 #  File has been updated.
 #  Successfully updated.
-# variable set ha 
-sh-table stats:
+# variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 # Not a target:
@@ -305,6 +297,6 @@ sh-table stats:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Fri Jun 17 11:39:18 2022
+# Finished Make data base on Fri Jun 17 11:48:23 2022
 
  
