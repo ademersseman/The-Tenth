@@ -22,9 +22,10 @@ int grid_height = 10;
 int grid_cell_width = 40;
 int grid_cell_height = 40;
 //Player:0 | Friendly NPC:1 | Hostile NPC: 2 | grass: 3
-int map[10][17];
+int map[17][10];
 Player player;
 Army legion;
+Army gauls;
 
 SDL_Renderer *renderer;
 void addTexture(int x, int y, const char* file) {
@@ -53,19 +54,26 @@ void attack() {
 }
 
 
-void loadRanks() {
-    for(int col = 0; col < 17; col++) {
-        legion.ranks[col] = 3;
-        for(int row = 7; row < 10; row++) {
-            map[row][col] = 1;//code for roman soldier NPC
+
+void loadRomanRanks() {
+    for (int x = 0; x < grid_width; x++) {
+        legion.ranks[x] = 3;
+        for(int y = legion.frontLine; y < grid_height; y++) {
+            map[x][y] = 1;//code for roman soldier NPC
         }
     }
-    for(int x = 0; x < 17 * grid_cell_width; x += grid_cell_width) {
-        for(int y = 10 * grid_cell_height; y > 6 * grid_cell_height; y -= grid_cell_height) {
-            addTexture(x, y, "grass_roman.bmp");
+    for (int x = 0; x < grid_width; x++) {
+        for(int y = grid_height; y > 6; y--) {
+            addTexture(x * grid_cell_width, y * grid_cell_height, "grass_roman.bmp");
         }
     }
     legion.frontLine = 7;
+}
+
+void loadGaulHorde() {
+    for (int x = 0; x < grid_width; x++) {
+        
+    }
 }
 
 void addGroundcover(int window_width, int window_height) {
@@ -83,14 +91,17 @@ void initBattleField(int window_width, int window_height) {
     SDL_RenderPresent(renderer);
 }
 
-void advance() {
+
+void romanAdvance() {
     legion.frontLine--;
     player.y -= grid_cell_height;
-    for (int col = 0; col < grid_width; col++) {
-        for (int row = legion.frontLine; row < legion.frontLine + legion.ranks[col]; row++) {
-            addTexture(col * grid_cell_height, row * grid_cell_width, "grass_roman.bmp");
+    for (int x = 0; x < grid_width; x++) {
+        for (int y = legion.frontLine; y < legion.frontLine + legion.ranks[x]; y++) {
+            map[x][y] = 1;
+            addTexture(x * grid_cell_width, y * grid_cell_height, "grass_roman.bmp");
         }
-        addTexture(col * grid_cell_height, (legion.frontLine + legion.ranks[col]) * grid_cell_width, "grass.bmp");
+        map[x][legion.frontLine + legion.ranks[x]] = 3;
+        addTexture(x * grid_cell_width, (legion.frontLine + legion.ranks[x]) * grid_cell_height, "grass.bmp");
     }
 }
 
@@ -224,6 +235,8 @@ int main(int argc, char *argv[]) {
             }
         }
 
+        romanAdvance();
+
         // Draw player.
         addTexture(player.x + 1, player.y + 1, "grass_player.bmp");
 
@@ -239,10 +252,10 @@ int main(int argc, char *argv[]) {
             SDL_RenderDrawLine(renderer, 0, y, window_width, y);
         }
 
-        advance();
-        SDL_Delay(1000);
 
         SDL_RenderPresent(renderer);
+
+        SDL_Delay(1000);
     }
 
     //destroy resources before quitting
