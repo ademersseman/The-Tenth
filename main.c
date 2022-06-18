@@ -4,7 +4,8 @@
 #include <stdbool.h>  
 
 typedef struct Army {
-    int ranks[4][17];
+    int ranks[17];
+    int frontLine;
 } Army;
 
 typedef struct Player {
@@ -12,6 +13,7 @@ typedef struct Player {
     int y;
     bool blocking;
     bool mobile;
+    int facing;
 } Player;
 
 
@@ -19,7 +21,9 @@ int grid_width = 17;
 int grid_height = 10;
 int grid_cell_width = 40;
 int grid_cell_height = 40;
-int map[17][10];
+//Player:0 | Friendly NPC:1 | Hostile NPC: 2 | grass: 3
+int map[10][17];
+Player player;
 Army legion;
 
 SDL_Renderer *renderer;
@@ -37,29 +41,68 @@ void addTexture(int x, int y, const char* file) {
     SDL_DestroyTexture(texture);
 }
 
-
-void loadRanks() {
-    for(int x = 0; x < 4; x++) {
-        for(int y = 0; y < 7; y++) {
-            legion.ranks[x][y] = 1;
-            map[x][y] = 2;//code for roman soldier NPC
-        }
-    }
-    for(int x = 0; x < 17 * grid_cell_width; x += grid_cell_width) {
-        for(int y = 6 * grid_cell_height; y < 10 * grid_cell_height; y += grid_cell_height) {
-            addTexture(x, y, "grass_roman.bmp");
-        }
+void attack() {
+    switch(player.facing) {
+        case 0:
+            //change texture here
+            if (map[player.y + 1][player.x] == 4) {//4 is enemy code
+                //get enemy local
+            }
+            break;
     }
 }
 
-void initBattleField(int window_width, int window_height) {
+
+void loadRanks() {
+    for(int col = 0; col < 17; col++) {
+        legion.ranks[col] = 3;
+        for(int row = 7; row < 10; row++) {
+            map[row][col] = 1;//code for roman soldier NPC
+        }
+    }
+    for(int x = 0; x < 17 * grid_cell_width; x += grid_cell_width) {
+        for(int y = 10 * grid_cell_height; y > 6 * grid_cell_height; y -= grid_cell_height) {
+            addTexture(x, y, "grass_roman.bmp");
+        }
+    }
+    legion.frontLine = 7;
+}
+
+void addGroundcover(int window_width, int window_height) {
     for (int x = 0; x < window_width; x += grid_cell_width) {
         for (int y = 0; y < window_height; y += grid_cell_height) {
             addTexture(x, y, "grass.bmp");
         }
     }
+}
+
+void initBattleField(int window_width, int window_height) {
+    addGroundcover(window_width, window_height);
     loadRanks();
+    player.y = grid_cell_height * (grid_height - legion.ranks[8]);
     SDL_RenderPresent(renderer);
+}
+
+void advance() {
+    legion.frontLine--;
+    player.y -= grid_cell_height;
+    for (int col = 0; col < grid_width; col++) {
+        for (int row = legion.frontLine; row < legion.frontLine + legion.ranks[col]; row++) {
+            addTexture(col * grid_cell_height, row * grid_cell_width, "grass_roman.bmp");
+        }
+        addTexture(col * grid_cell_height, (legion.frontLine + legion.ranks[col]) * grid_cell_width, "grass.bmp");
+    }
+}
+
+//swaps player to back of line
+void manipleSwap() {
+    for (int x = 0; x < legion.ranks[8]; x++) {
+        addTexture(player.x, player.y, "grass_roman.bmp");
+        player.y += grid_cell_height;
+        addTexture(player.x, player.y, "grass_player.bmp");
+        SDL_RenderPresent(renderer);
+        SDL_Delay(1000);
+    }
 }
 
 int main(int argc, char *argv[]) {
@@ -91,7 +134,6 @@ int main(int argc, char *argv[]) {
 
     SDL_bool quit = SDL_FALSE;
 
-    Player player;
     player.blocking = false;
     player.x = (grid_width - 1) / 2 * grid_cell_width;
     player.y = (grid_height - 1) / 2 * grid_cell_height;
@@ -110,6 +152,7 @@ int main(int argc, char *argv[]) {
                         if (player.y - grid_cell_height >= 0) {
                             addTexture(player.x, player.y, "grass.bmp");
                             player.y -= grid_cell_height;
+                            player.facing = 0;
                         }
                         break;
                     case SDLK_s:
@@ -117,6 +160,7 @@ int main(int argc, char *argv[]) {
                         if (player.y + 1.5 * grid_cell_height  < window_height) {
                             addTexture(player.x, player.y, "grass.bmp");
                             player.y += grid_cell_height;
+                            player.facing = 2;
                         }
                         break;
                     case SDLK_a:
@@ -124,6 +168,7 @@ int main(int argc, char *argv[]) {
                         if (player.x - grid_cell_width >= 0) {
                             addTexture(player.x, player.y, "grass.bmp");
                             player.x -= grid_cell_width;
+                            player.facing = 3;
                         }
                         break;
                     case SDLK_d:
@@ -131,6 +176,7 @@ int main(int argc, char *argv[]) {
                         if (player.x + 1.5 * grid_cell_width < window_width) {
                             addTexture(player.x, player.y, "grass.bmp");
                             player.x += grid_cell_width;
+                            player.facing = 1;
                         }
                         break;
                     case SDLK_e:
@@ -152,8 +198,11 @@ int main(int argc, char *argv[]) {
                         SDL_RenderPresent(renderer);
                         break;
                     case SDLK_q:
-                    player.blocking = !player.blocking;
-                    break;
+                        player.blocking = !player.blocking;
+                        break;
+                    case SDLK_f:
+                        attack();
+                        break;
                 }
                 break;
             case SDL_WINDOWEVENT:
@@ -189,6 +238,9 @@ int main(int argc, char *argv[]) {
         for (int y = 0; y < 1 + grid_height * grid_cell_height; y += grid_cell_height) {
             SDL_RenderDrawLine(renderer, 0, y, window_width, y);
         }
+
+        advance();
+        SDL_Delay(1000);
 
         SDL_RenderPresent(renderer);
     }
