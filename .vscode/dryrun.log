@@ -1,5 +1,7 @@
 make.exe --dry-run --always-make --keep-going --print-directory
 make.exe: Entering directory `c:/Users/Alan De Mersseman/Projects/The Tenth'
-gcc -Isrc/include -Lsrc/lib -o main main.c -lmingw32 -lSDL2main -lSDL2
+ 
+make.exe: *** No targets specified and no makefile found.  Stop.
+
 make.exe: Leaving directory `c:/Users/Alan De Mersseman/Projects/The Tenth'
  
