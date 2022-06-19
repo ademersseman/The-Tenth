@@ -59,10 +59,6 @@ void loadRomanRanks() {
         legion.ranks[x] = 3;
         for(int y = legion.frontLine; y < grid_height; y++) {
             map[x][y] = 1;//code for roman soldier NPC
-        }
-    }
-    for (int x = 0; x < grid_width; x++) {
-        for(int y = grid_height; y > 6; y--) {
             addTexture(x * grid_cell_width, y * grid_cell_height, "grass_roman.bmp");
         }
     }
@@ -70,11 +66,9 @@ void loadRomanRanks() {
 
 //loads gaul horde
 void loadGaulHorde() {
-    for (int i = 0; i < grid_width; i++) {
-        gauls.ranks[i] = 0;
-    }
     gauls.frontLine = 3;
     for (int x = 0; x < grid_width; x++) {
+        gauls.ranks[x] = 0;
         for (int y = 0; y <= gauls.frontLine; y++) {
             if (rand() % 3 != 0) {
                 gauls.ranks[x]++;
@@ -113,6 +107,19 @@ void gaulGapFill() {
         }
     }
 }
+
+void RomanGapFill() {
+    for (int x = 0; x < grid_width; x++) {
+        if (map[x][legion.frontLine] == 3 && map[x][legion.frontLine + 1] == 1) {
+            addTexture(x * grid_cell_width, legion.frontLine * grid_cell_height, "grass_roman.bmp");
+            map[x][legion.frontLine] = 1;
+            map[x][legion.frontLine + legion.ranks[x] - 1] = 3;
+            addTexture(x * grid_cell_width, (legion.frontLine + legion.ranks[x]) * grid_cell_height, "grass.bmp");
+        }
+    }
+    SDL_RenderPresent(renderer);
+}
+
 
 void addGroundcover(int window_width, int window_height) {
     for (int x = 0; x < grid_width; x++) {
@@ -154,9 +161,37 @@ void manipleSwap() {
     for (int x = 0; x < legion.ranks[8] - 1; x++) {
         addTexture(player.x, player.y, "grass_roman.bmp");
         player.y += grid_cell_height;
-        addTexture(player.x, player.y, "grass_player.bmp");
+        addTexture(player.x + 1, player.y + 1, "grass_player.bmp");
         SDL_RenderPresent(renderer);
         SDL_Delay(1000);
+    }
+}
+
+void simulateBattlefield() {
+    for (int x = 0; x < grid_width; x++) {
+        if (rand() > 22000) {
+            addTexture(x * grid_cell_width, gauls.frontLine * grid_cell_height, "grass_attack.bmp");
+            SDL_RenderPresent(renderer);
+            if (rand() > 16000) {
+                legion.ranks[x]--;
+                map[x][legion.frontLine] = 3;
+                addTexture(x * grid_cell_width, legion.frontLine * grid_cell_height, "grass.bmp");
+            }
+            addTexture(x * grid_cell_width, gauls.frontLine * grid_cell_height, "grass_gaul.bmp");
+            SDL_RenderPresent(renderer);
+        }
+        if (rand() > 22000 && map[x][gauls.frontLine] == 2) {
+            addTexture(x * grid_cell_width, legion.frontLine * grid_cell_height, "grass_attack.bmp");
+            SDL_RenderPresent(renderer);
+            if (rand() > 16000) {
+                gauls.ranks[x]--;
+                map[x][gauls.frontLine] = 3;
+                addTexture(x * grid_cell_width, gauls.frontLine * grid_cell_height, "grass.bmp");
+            }
+            addTexture(x * grid_cell_width, legion.frontLine * grid_cell_height, "grass_roman.bmp");
+            SDL_RenderPresent(renderer);
+
+        }
     }
 }
 
@@ -169,20 +204,8 @@ void battle(int window_width, int window_height) {
     gaulAdvance();
     SDL_Delay(1000);
     gaulGapFill();
-}
-
-int NPCDual(void *ptr) {
-    for (int x = 0; x < grid_width; x++) {
-        if (rand() > 25000) {
-            addTexture(x * grid_cell_width, gauls.frontLine * grid_cell_height, "grass_attack.bmp");
-            SDL_Delay(100);
-            if (rand() > 29000) {
-                addTexture(x * grid_cell_width, legion.frontLine * grid_cell_height, "grass.bmp");
-            }
-            addTexture(x * grid_cell_width, gauls.frontLine, "grass_gaul.bmp");
-            SDL_RenderPresent(renderer);
-        }
-    }
+    simulateBattlefield();
+    RomanGapFill();
 }
 
 int main(int argc, char *argv[]) {
@@ -218,7 +241,8 @@ int main(int argc, char *argv[]) {
 
     //testing placing textures on grid
     battle(window_width, window_height);
-    SDL_Thread *thread = SDL_CreateThread(NPCDual, "test Thread", (void *)NULL);
+    //SDL_Thread *thread = SDL_CreateThread(NPCDual, "test Thread", (void *)NULL);
+    //SDL_DetachThread(thread);
 
     while (!quit) {
         SDL_Event event;

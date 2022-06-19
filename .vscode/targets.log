@@ -8,7 +8,7 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 # This program built for i386-pc-mingw32
  
 
-# Make data base, printed on Sat Jun 18 10:10:35 2022
+# Make data base, printed on Sun Jun 19 14:17:41 2022
 
 # Variables
 
@@ -56,7 +56,7 @@ PROGRAMW6432 = C:\Program Files
 # environment
 PROGRAMDATA = C:\ProgramData
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-e680079e-8931-4c05-8523-1d46ecc28146-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-e1528c87-cb0c-4690-be46-aae9fa52ff50-sock
 # environment
 VSCODE_CWD = C:\Users\Alan De Mersseman\AppData\Local\Programs\Microsoft VS Code
 # environment
@@ -84,7 +84,7 @@ ELECTRON_RUN_AS_NODE = 1
 # automatic
 %F = $(notdir $%)
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_464_GCZIDOFXKYOILSHC
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_3820_GELHGUODKCXXMHWK
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
@@ -106,8 +106,7 @@ VSCODE_CODE_CACHE_PATH = C:\Users\Alan De Mersseman\AppData\Roaming\Code\CachedD
 # environment
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
 # environment
-COMMONPROGRAMFILES = C:\ 
-Program Files (x86)\Common Files
+COMMONPROGRAMFILES = C:\Program Files (x86)\Common Files
 # environment
 LOGONSERVER = \\ALANSPC
 # environment
@@ -129,7 +128,8 @@ PROGRAMFILES(X86) = C:\Program Files (x86)
 # environment
 LOCALAPPDATA = C:\Users\Alan De Mersseman\AppData\Local
 # environment
-PSMODULEPATH = C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules
+PSMODULEPATH = C:\Program Files\WindowsPowerS 
+hell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules
 # default
 MAKE_COMMAND := make.exe
 # environment
@@ -191,7 +191,7 @@ PROCESSOR_LEVEL = 23
 # environment
 FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
 # environment
-VSCODE_PID = 464
+VSCODE_PID = 3820
 # environment
 USERDOMAIN_ROAMINGPROFILE = ALANSPC
 # variable set hash-table stats:
@@ -199,39 +199,38 @@ USERDOMAIN_ROAMINGPROFILE = ALANSPC
 
 # Pattern-specific Variable Values
 
-# No pattern-specific  
-variable values.
+# No pattern-specifi 
+c variable values.
 
 # Directories
 
 # C:\Program Files\Common Files\Oracle\Java\javapath (key C:/Program Files/Common Files/Oracle/Java/javapath, mtime 1626627333): 6 files, no impossibilities.
 # C:\WINDOWS\System32\WindowsPowerShell\v1.0\ (key C:/WINDOWS/System32/WindowsPowerShell/v1.0/, mtime 1616200226): 30 files, no impossibilities.
 # C:\Windows\System32\Wbem (key C:/Windows/System32/Wbem, mtime 1655489231): 154 files, no impossibilities.
-# . (key c:/Users/Alan De Mersseman/Projects/The Tenth, mtime 1655514517): 13 files, no impossibilities.
+# . (key c:/Users/Alan De Mersseman/Projects/The Tenth, mtime 1655659657): 15 files, no impossibilities.
 # C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common (key C:/Program Files (x86)/NVIDIA Corporation/PhysX/Common, mtime 1592836757): 10 files, no impossibilities.
 # C:\ProgramData\chocolatey\bin (key C:/ProgramData/chocolatey/bin, mtime 1613596406): 13 files, no impossibilities.
 # C:\Program Files\nodejs\ (key C:/Program Files/nodejs/, mtime 1648788910): 13 files, no impossibilities.
 # C:\Program Files (x86)\Java\jre1.8.0_291\bin: could not be stat'd.
-# C:\Users\Alan 
- De Mersseman\AppData\Local\atom\bin (key C:/Users/Alan De Mersseman/AppData/Local/atom/bin, mtime 1592697303): 6 files, no impossibilities.
-# C:\MinGW\bin (key C:/MinGW/bin, mtime 1613437502): 127 files, no impossibilities.
+# C:\Users\Al 
+an De Mersseman\AppData\Local\atom\bin (key C:/Users/Alan De Mersseman/AppData/Local/atom/bin, mtime 1592697303): 6 files, no impossibilities.
+# C:\MinGW\bin (key C:/MinGW/bin, mtime 1655596756): 127 files, no impossibilities.
 # C:\Windows\System32\OpenSSH\: could not be stat'd.
 # C:\Users\Alan De Mersseman\AppData\Local\Programs\Microsoft VS Code\bin (key C:/Users/Alan De Mersseman/AppData/Local/Programs/Microsoft VS Code/bin, mtime 1655318429): 4 files, no impossibilities.
-# C:\Windows (key C:/Windows, mtim 
-e 1617228549): 113 files, no impossibilities.
+# C:\Windows (key C:/Windows, mtime 1617228549): 113 files, no impossibilities.
 # C:\Users\Alan De Mersseman\AppData\Local\GitHubDesktop\bin (key C:/Users/Alan De Mersseman/AppData/Local/GitHubDesktop/bin, mtime 1615851692): 4 files, no impossibilities.
 # C:\Users\Alan De Mersseman\AppData\Roaming\npm (key C:/Users/Alan De Mersseman/AppData/Roaming/npm, mtime 1613617272): 9 files, no impossibilities.
 # C:\Python39\ (key C:/Python39/, mtime 1613596440): 18 files, no impossibilities.
-# C:\Users\Alan De Mersseman\AppData\Local\Programs\MiKTeX\miktex\bin\x64\ (key C:/Users/Alan De Mersseman/AppData/Local/Programs/MiKTeX/miktex/bin/x64/, mtime 1655323446): 732 files, no impossibilities.
+# C:\Users\Alan De Mersseman\AppData\Local\Programs\MiKTe 
+X\miktex\bin\x64\ (key C:/Users/Alan De Mersseman/AppData/Local/Programs/MiKTeX/miktex/bin/x64/, mtime 1655323446): 732 files, no impossibilities.
 # C:\Python39\Scripts\ (key C:/Python39/Scripts/, mtime 1614098003): 8 files, no impossibilities.
 # C:\Program Files\Git\cmd (key C:/Program Files/Git/cmd, mtime 1653069329): 8 files, no impossibilities.
-# C:\Windows\system32 (key C:/Windows/system32, mtime 1655503953): 2951 files, no impossibilities.
-# C:\Users\Alan De Mersseman\AppData\Local\Microsoft\WindowsApps 
- (key C:/Users/Alan De Mersseman/AppData/Local/Microsoft/WindowsApps, mtime 1655321186): 24 files, no impossibilities.
+# C:\Windows\system32 (key C:/Windows/system32, mtime 1655583052): 2951 files, no impossibilities.
+# C:\Users\Alan De Mersseman\AppData\Local\Microsoft\WindowsApps (key C:/Users/Alan De Mersseman/AppData/Local/Microsoft/WindowsApps, mtime 1655321186): 24 files, no impossibilities.
 # C:\Windows\System32\WindowsPowerShell\v1.0 (key C:/Windows/System32/WindowsPowerShell/v1.0, mtime 1616200226): 30 files, no impossibilities.
 # C:\Program Files (x86)\GnuWin32\bin (key C:/Program Files (x86)/GnuWin32/bin, mtime 1655307018): 5 files, no impossibilities.
 
-# 4278 files, no impossibilities in 23 directories.
+# 4280 files, no impossibilities in 23 directories.
 
 # Implicit Rules
 
@@ -240,8 +239,8 @@ e 1617228549): 113 files, no impossibilities.
 # Files
 
 # Not a target:
-all 
-:
+a 
+ll:
 #  Command-line target.
 #  Implicit rule search has been done.
 #  File does not exist.
@@ -261,7 +260,8 @@ makefile:
 #  Implicit rule search has been done.
 #  File does not exist.
 #  File has been updated.
-#  Failed to be updated.
+#  Fai 
+led to be updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
@@ -281,10 +281,7 @@ GNUmakefile:
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
-# f 
-make.exe: *** No rule to make target `all'.  Stop.
-
-iles hash-table stats:
+# files hash-table stats:
 # Load=5/1024=0%, Rehash=0, Collisions=0/16=0%
 # VPATH Search Paths
 
@@ -297,6 +294,8 @@ iles hash-table stats:
 # strcache size: total = 0 / max = 0 / min = 4096 / avg = 0
 # strcache free: total = 0 / max = 0 / min = 4096 / avg = 0
 
-# Finished Make data base on Sat Jun 18 10:10:35 2022
+# Finished Make data base on Sun Jun 19 14:17:41 2022
 
  
+make.exe: *** No rule to make target `all'.  Stop.
+
