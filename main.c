@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdbool.h>  
+#include <stdbool.h>
 
 typedef struct Army {
     int ranks[17];
@@ -53,9 +53,8 @@ void attack() {
     }
 }
 
-
-
 void loadRomanRanks() {
+    legion.frontLine = 7;
     for (int x = 0; x < grid_width; x++) {
         legion.ranks[x] = 3;
         for(int y = legion.frontLine; y < grid_height; y++) {
@@ -67,26 +66,70 @@ void loadRomanRanks() {
             addTexture(x * grid_cell_width, y * grid_cell_height, "grass_roman.bmp");
         }
     }
-    legion.frontLine = 7;
 }
 
+//loads gaul horde
 void loadGaulHorde() {
-    for (int x = 0; x < grid_width; x++) {
-        
+    for (int i = 0; i < grid_width; i++) {
+        gauls.ranks[i] = 0;
     }
-}
-
-void addGroundcover(int window_width, int window_height) {
-    for (int x = 0; x < window_width; x += grid_cell_width) {
-        for (int y = 0; y < window_height; y += grid_cell_height) {
-            addTexture(x, y, "grass.bmp");
+    gauls.frontLine = 3;
+    for (int x = 0; x < grid_width; x++) {
+        for (int y = 0; y <= gauls.frontLine; y++) {
+            if (rand() % 3 != 0) {
+                gauls.ranks[x]++;
+                map[x][y] = 2;
+                addTexture(x * grid_cell_width, y * grid_cell_height, "grass_gaul.bmp");
+            }
         }
     }
 }
 
+//moves gauls down one 
+void gaulAdvance() {
+    gauls.frontLine++;
+    for (int y = gauls.frontLine; y > gauls.frontLine - 4; y--) {
+        for (int x = 0; x < grid_width; x++) {
+            addTexture(x * grid_cell_width, (y - 1) * grid_cell_height, "grass.bmp");
+            map[x][y] = map[x][y - 1];
+            map[x][y - 1] = 0;
+            if (map[x][y] == 2) {
+                addTexture(x * grid_cell_width, y * grid_cell_height, "grass_gaul.bmp");
+            }
+        }
+    }
+    SDL_RenderPresent(renderer);
+}
+
+void gaulGapFill() {
+    for (int x = 0; x < grid_width; x++) {
+        for (int y = gauls.frontLine - 1; y > gauls.frontLine - 4; y--) {
+            if (map[x][y] == 2 && map[x][y + 1] == 3) {
+                addTexture(x * grid_cell_width, y * grid_cell_height, "grass.bmp");
+                map[x][y + 1] = map[x][y];
+                map[x][y] = 3;
+                addTexture(x * grid_cell_width, (y + 1) * grid_cell_height, "grass_gaul.bmp");
+            }
+        }
+    }
+}
+
+void addGroundcover(int window_width, int window_height) {
+    for (int x = 0; x < grid_width; x++) {
+        for (int y = 0; y < grid_height; y++) {
+            map[x][y] = 3;
+            addTexture(x * grid_cell_width, y * grid_cell_height, "grass.bmp");
+        }
+    }
+    SDL_RenderPresent(renderer);
+}
+
+
 void initBattleField(int window_width, int window_height) {
+    player.mobile = false;
     addGroundcover(window_width, window_height);
-    loadRanks();
+    loadRomanRanks();
+    loadGaulHorde();
     player.y = grid_cell_height * (grid_height - legion.ranks[8]);
     SDL_RenderPresent(renderer);
 }
@@ -103,11 +146,12 @@ void romanAdvance() {
         map[x][legion.frontLine + legion.ranks[x]] = 3;
         addTexture(x * grid_cell_width, (legion.frontLine + legion.ranks[x]) * grid_cell_height, "grass.bmp");
     }
+    SDL_RenderPresent(renderer);
 }
 
 //swaps player to back of line
 void manipleSwap() {
-    for (int x = 0; x < legion.ranks[8]; x++) {
+    for (int x = 0; x < legion.ranks[8] - 1; x++) {
         addTexture(player.x, player.y, "grass_roman.bmp");
         player.y += grid_cell_height;
         addTexture(player.x, player.y, "grass_player.bmp");
@@ -116,12 +160,35 @@ void manipleSwap() {
     }
 }
 
+void battle(int window_width, int window_height) {
+    initBattleField(window_width, window_height);
+    romanAdvance();
+    SDL_Delay(1000);
+    gaulAdvance();
+    SDL_Delay(1000);
+    gaulAdvance();
+    SDL_Delay(1000);
+    gaulGapFill();
+}
+
+int NPCDual(void *ptr) {
+    for (int x = 0; x < grid_width; x++) {
+        if (rand() > 25000) {
+            addTexture(x * grid_cell_width, gauls.frontLine * grid_cell_height, "grass_attack.bmp");
+            SDL_Delay(100);
+            if (rand() > 29000) {
+                addTexture(x * grid_cell_width, legion.frontLine * grid_cell_height, "grass.bmp");
+            }
+            addTexture(x * grid_cell_width, gauls.frontLine, "grass_gaul.bmp");
+            SDL_RenderPresent(renderer);
+        }
+    }
+}
+
 int main(int argc, char *argv[]) {
     // + 1 so that the last grid lines fit in the screen.
     int window_width = (grid_width * grid_cell_width) + 1;//originally 1045
     int window_height = (grid_height * grid_cell_height) + 1;//originally 829
-    //29x23 grid
-    // Place the grid cursor in the middle of the screen.
 
     // Dark theme.
     SDL_Color grid_line_color = {44, 44, 44, 255}; // Dark grey
@@ -150,7 +217,8 @@ int main(int argc, char *argv[]) {
     player.y = (grid_height - 1) / 2 * grid_cell_height;
 
     //testing placing textures on grid
-    initBattleField(window_width, window_height);
+    battle(window_width, window_height);
+    SDL_Thread *thread = SDL_CreateThread(NPCDual, "test Thread", (void *)NULL);
 
     while (!quit) {
         SDL_Event event;
@@ -235,7 +303,6 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        romanAdvance();
 
         // Draw player.
         addTexture(player.x + 1, player.y + 1, "grass_player.bmp");
@@ -252,10 +319,7 @@ int main(int argc, char *argv[]) {
             SDL_RenderDrawLine(renderer, 0, y, window_width, y);
         }
 
-
         SDL_RenderPresent(renderer);
-
-        SDL_Delay(1000);
     }
 
     //destroy resources before quitting
