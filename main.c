@@ -17,6 +17,12 @@ typedef struct Player {
     int facing;
 } Player;
 
+typedef struct Point {
+    int x;
+    int y;
+    bool dir;//true when moving left or up
+    struct Point *next;
+} Point;
 
 int grid_width = 17;
 int grid_height = 10;
@@ -41,6 +47,38 @@ void addTexture(int x, int y, const char* file) {
     };
     SDL_RenderCopy(renderer, texture, NULL, &tile);
     SDL_DestroyTexture(texture);
+}
+
+//for entering raw points
+void addTextureNoScale(int x, int y, const char* file) {
+    SDL_Surface* surface = SDL_LoadBMP(file);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
+    SDL_Rect tile = {
+        .x = x,
+        .y = y,
+        .w = grid_cell_width,
+        .h = grid_cell_height,
+    };
+    SDL_RenderCopy(renderer, texture, NULL, &tile);
+    SDL_DestroyTexture(texture);
+}
+
+void reverse(Point *ptr) {
+    Point *prev = NULL;
+    Point *curr;
+    Point *next = NULL;
+
+    curr = ptr;
+    while(curr != NULL) {
+        next = curr->next;
+
+        curr->next = prev;
+
+        prev = curr;
+        curr = next;
+    }
+    ptr = prev;
 }
 
 void block() {
@@ -70,6 +108,24 @@ bool attack() {
     }
 }
 
+//interpret player controls during delay
+void battleDelay(Uint32 delay) {
+    Uint32 time = SDL_GetTicks() + delay;
+    while (!SDL_TICKS_PASSED(SDL_GetTicks(), time)) {
+        SDL_Event event;
+        while (SDL_PollEvent(&event) && event.type == SDL_KEYDOWN) {
+            switch (event.key.keysym.sym) {
+                case SDLK_q:
+                    block();
+                    break;
+                case SDLK_e:
+                    attack();
+                    break;
+            }
+            break;
+        }
+    }
+}
 void loadRomanRanks() {
     legion.soldiers = 51;
     legion.frontLine = 7;
@@ -101,7 +157,7 @@ void loadGaulHorde() {
     SDL_RenderPresent(renderer);
 }
 
-//moves gauls down one
+//shift gauls down one
 void gaulAdvance() {
     gauls.frontLine++;
     for (int y = gauls.frontLine; y > gauls.frontLine - 4; y--) {
@@ -117,28 +173,105 @@ void gaulAdvance() {
     SDL_RenderPresent(renderer);
 }
 
+void animateGaul(Point *up) {
+    Point *curr = up;
+    while(curr != NULL) {
+        for (int i = 1; i <= 4; i++) {
+            addTextureNoScale(curr->x, curr->y, "grass.bmp");
+            addTextureNoScale(curr->x, curr->dir ? curr->y - i * grid_cell_height/4: curr->y + i * grid_cell_height/4, "grass_gaul.bmp");
+            battleDelay(20);
+            SDL_RenderPresent(renderer);
+        }
+        curr = curr->next;
+    }
+}
+
+//if a gaul sees a space infront he moves
 void gaulGapFill() {
-    for (int x = 0; x < grid_width; x++) {
-        for (int y = gauls.frontLine - 1; y > gauls.frontLine - 4; y--) {
-            if (map[x][y] == 2 && map[x][y + 1] == 3) {
-                addTexture(x, y, "grass.bmp");
-                map[x][y + 1] = map[x][y];
-                map[x][y] = 3;
-                addTexture(x, (y + 1), "grass_gaul.bmp");
+    for (int y = gauls.frontLine; y > gauls.frontLine - 4; y--) {
+        Point *down = NULL;
+        for (int x = 0; x < grid_width; x++) {
+            if (map[x][y] == 3 && map[x][y - 1] == 2) {
+                Point *p = malloc(sizeof *p);
+                p->x = x * grid_cell_width;
+                p->y = (y - 1) * grid_cell_height;
+                p->dir = false;
+                p->next = down;
+                down = p;
+                map[x][y] = 2;
+                map[x][y - 1] = 3;
             }
         }
+        //reverse(down);
+        animateGaul(down);
     }
     SDL_RenderPresent(renderer);
 }
 
-void RomanGapFill() {
-    for (int x = 0; x < grid_width; x++) {
-        if (map[x][legion.frontLine] == 3 && map[x][legion.frontLine + 1] == 1) {
-            addTexture(x, legion.frontLine, "grass_roman.bmp");
-            map[x][legion.frontLine] = 1;
-            map[x][legion.frontLine + legion.ranks[x]] = 3;
-            addTexture(x, (legion.frontLine + legion.ranks[x]), "grass.bmp");
+
+void animateRoman(Point *up, Point *left) {
+    Point *curr = up;
+    while(curr != NULL) {
+        for (int i = 1; i <= 4; i++) {
+            addTextureNoScale(curr->x, curr->y, "grass.bmp");
+            addTextureNoScale(curr->x, curr->dir ? curr->y - i * grid_cell_height/4: curr->y + i * grid_cell_height/4, "grass_roman.bmp");
+            battleDelay(20);
+            SDL_RenderPresent(renderer);
         }
+        curr = curr->next;
+    }
+    curr = left;
+    while(curr != NULL) {
+        for (int i = 1; i <= 4; i++) {
+            addTextureNoScale(curr->x, curr->y, "grass.bmp");
+            addTextureNoScale(curr->dir ? curr->x - i * grid_cell_width/4: curr->x + i * grid_cell_width/4, curr->y, "grass_roman.bmp");
+            battleDelay(20);
+            SDL_RenderPresent(renderer);
+        }
+        curr = curr->next;
+    }
+}
+
+void RomanGapFill() {
+    Point *down;
+    Point *left;
+    for (int y = legion.frontLine; y < legion.frontLine + 3; y++) {
+        Point *down = NULL;
+        Point *left = NULL;
+        for (int x = 0; x < grid_width; x++) {
+            if (map[x][y] == 3 && map[x][y + 1] == 1) {//if there's an empty space infront move to occupy
+                Point *p = malloc(sizeof *p);
+                p->x = x * grid_cell_width;
+                p->y = (y + 1) * grid_cell_height;
+                p->dir = true;
+                p->next = down;
+                down = p;
+                map[x][y] = 1;
+                map[x][y + 1] = 3;
+            } else if (y == legion.frontLine + legion.ranks[x] - 1 && map[x][y] == 1 && x > 0 && legion.ranks[x - 1] < legion.ranks[x] - 1 && map[x - 1][y] == 3) {//shift left
+                Point *p = malloc(sizeof *p);
+                p->x = x * grid_cell_width;
+                p->y = y * grid_cell_height;
+                p->dir = true;
+                p->next = left;
+                left = p;
+                map[x - 1][y] = 1;
+                map[x][y] = 3;
+                legion.ranks[x]--;
+                legion.ranks[x - 1]++;
+            } else if (y == legion.frontLine + legion.ranks[x] - 1 && map[x][y] == 1 && x < grid_width -1 && legion.ranks[x + 1] < legion.ranks[x] - 1 && map[x + 1][y] == 3) {//shift right
+                Point *p = malloc(sizeof *p);
+                p->x = x * grid_cell_width;
+                p->y = y * grid_cell_height;
+                p->dir = false;
+                p->next = left;
+                map[x + 1][y] = 1;
+                map[x][y] = 3;
+                legion.ranks[x]--;
+                legion.ranks[x + 1]++;
+            }
+        }
+        animateRoman(down, left);
     }
     SDL_RenderPresent(renderer);
 }
@@ -193,24 +326,6 @@ void manipleSwap() {
     }
 }
 
-//interpret player controls during delay
-void battleDelay(Uint32 delay) {
-    Uint32 time = SDL_GetTicks() + delay;
-    while (!SDL_TICKS_PASSED(SDL_GetTicks(), time)) {
-        SDL_Event event;
-        while (SDL_PollEvent(&event) && event.type == SDL_KEYDOWN) {
-            switch (event.key.keysym.sym) {
-                case SDLK_q:
-                    block();
-                    break;
-                case SDLK_e:
-                    attack();
-                    break;
-            }
-            break;
-        }
-    }
-}
 
 //decerments rank, soldiers, changes map, texutre of opp
 void romanDeath(int rank) {
@@ -278,13 +393,13 @@ void simulateBattlefield() {
 void battle(int window_width, int window_height) {
     initBattleField(window_width, window_height);
     gaulAdvance();
-    battleDelay(1000);
+    //battleDelay(1000);
     romanAdvance();
-    battleDelay(1000);
+    //battleDelay(1000);
     gaulAdvance();
-    battleDelay(1000);
+    //battleDelay(1000);
     gaulGapFill();
-    battleDelay(1000);
+    //battleDelay(1000);
     while (gauls.soldiers > 10) {
         simulateBattlefield();
         battleDelay(1000);
