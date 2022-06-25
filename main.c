@@ -40,17 +40,30 @@ Army gauls;
 
 SDL_Renderer *renderer;
 
-void loadMenu() {
-    SDL_Surface* surface = SDL_LoadBMP("grass.bmp");
+void addTextureBlock(int x, int y, int w, int h, const char *file) {
+    SDL_Surface* surface = SDL_LoadBMP(file);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
     SDL_Rect tile = {
-        .x = 0,
-        .y = 0,
-        .w = window_width,
-        .h = window_height,
+        .x = x,
+        .y = y,
+        .w = w,
+        .h = h,
     };
     SDL_RenderCopy(renderer, texture, NULL, &tile);
+    SDL_DestroyTexture(texture);
+}
 
+void addTexture(int x, int y, const char *file) {
+    addTextureNoScale(x * grid_cell_width, y * grid_cell_height, file);
+}
+
+//for entering raw points
+void addTextureNoScale(int x, int y, const char *file) {
+    addTextureBlock(x, y, grid_cell_width, grid_cell_width, file);
+}
+
+void loadMenu() {
     int menuSelection = 0;
     SDL_bool quitMenu = SDL_FALSE;
     while(!quitMenu) {
@@ -97,77 +110,35 @@ void loadMenu() {
                     break;
             }
         }
+        //load background
+        SDL_Surface* surface = SDL_LoadBMP("grass.bmp");
+        SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+        SDL_Rect tile = {
+            .x = 0,
+            .y = 0,
+            .w = window_width,
+            .h = window_height,
+        };
+        SDL_RenderCopy(renderer, texture, NULL, &tile);
 
         if (menuSelection == 0) {
-            surface = SDL_LoadBMP("grass.bmp");
-            texture = SDL_CreateTextureFromSurface(renderer, surface);
-            tile.x = window_width/3,
-            tile.y = window_height/2,
-            tile.w = window_width/3,
-            tile.h = grid_cell_height,
-            SDL_RenderCopy(renderer, texture, NULL, &tile);
+            addTextureBlock(window_width/3, window_height/2, window_width/3, grid_cell_height, "grass.bmp");
         } else {
-            surface = SDL_LoadBMP("grass_attack.bmp");
-            texture = SDL_CreateTextureFromSurface(renderer, surface);
-            tile.x = window_width/3,
-            tile.y = window_height/2,
-            tile.w = window_width/3,
-            tile.h = grid_cell_height,
-            SDL_RenderCopy(renderer, texture, NULL, &tile);
+            addTextureBlock(window_width/3, window_height/2, window_width/3, grid_cell_height, "grass_attack.bmp");
         }
 
         if (menuSelection == 1) {
-            surface = SDL_LoadBMP("grass.bmp");
-            texture = SDL_CreateTextureFromSurface(renderer, surface);
-            tile.x = window_width/3,
-            tile.y = window_height/1.5,
-            tile.w = window_width/3,
-            tile.h = grid_cell_height,
-            SDL_RenderCopy(renderer, texture, NULL, &tile);
+            addTextureBlock(window_width/3, window_height/1.5, window_width/3, grid_cell_height, "grass.bmp");
         } else {
-            surface = SDL_LoadBMP("grass_attack.bmp");
-            texture = SDL_CreateTextureFromSurface(renderer, surface);
-            tile.x = window_width/3,
-            tile.y = window_height/1.5,
-            tile.w = window_width/3,
-            tile.h = grid_cell_height,
-            SDL_RenderCopy(renderer, texture, NULL, &tile);
+            addTextureBlock(window_width/3, window_height/1.5, window_width/3, grid_cell_height, "grass_attack.bmp");
         }
 
         SDL_RenderPresent(renderer);
+        SDL_FreeSurface(surface);
+        SDL_DestroyTexture(texture);
     }
-    SDL_FreeSurface(surface);
-    SDL_DestroyTexture(texture);
 }
 
-void addTexture(int x, int y, const char* file) {
-    SDL_Surface* surface = SDL_LoadBMP(file);
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_FreeSurface(surface);
-    SDL_Rect tile = {
-        .x = x * grid_cell_width,
-        .y = y * grid_cell_height,
-        .w = grid_cell_width,
-        .h = grid_cell_height,
-    };
-    SDL_RenderCopy(renderer, texture, NULL, &tile);
-    SDL_DestroyTexture(texture);
-}
-
-//for entering raw points
-void addTextureNoScale(int x, int y, const char* file) {
-    SDL_Surface* surface = SDL_LoadBMP(file);
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_FreeSurface(surface);
-    SDL_Rect tile = {
-        .x = x,
-        .y = y,
-        .w = grid_cell_width,
-        .h = grid_cell_height,
-    };
-    SDL_RenderCopy(renderer, texture, NULL, &tile);
-    SDL_DestroyTexture(texture);
-}
 
 void block() {
     player.blocking = !player.blocking;
