@@ -148,10 +148,10 @@ void loadMenu() {
 void block() {
     player.blocking = !player.blocking;
     if (player.blocking) {
-        addTexture(player.x, player.y, "grass_player_blocking.bmp");
+        addTexture(player.x, player.y, "grass_player1_blocking.bmp");
         player.mobile = SDL_FALSE;
     } else {
-        addTexture(player.x, player.y, "grass_player.bmp");
+        addTexture(player.x, player.y, "grass_player1.bmp");
         player.mobile = SDL_TRUE;
     }
     SDL_RenderPresent(renderer);
@@ -170,7 +170,7 @@ void attack() {
             }
             SDL_RenderPresent(renderer);
             SDL_Delay(500);
-            addTexture(player.x, player.y, "grass_player.bmp");
+            addTexture(player.x, player.y, "grass_player1.bmp");
             SDL_RenderPresent(renderer);
             break;
     }
@@ -225,7 +225,7 @@ void loadRomanRanks() {
     player.y = legion.frontLine;
     player.facing = 0;
     map[player.x][player.y] = 0;
-    addTexture(player.x, player.y, "grass_player.bmp");
+    addTexture(player.x, player.y, "grass_player1.bmp");
 }
 
 //initializes gaul horde
@@ -304,7 +304,7 @@ void romanGapFill() {
         for (int x = 0; x < grid_width; x++) {
             if (map[x][y] == 3 && (map[x][y + 1] == 1 || map[x][y + 1] == 0)) {//if there's an empty space infront move to occupy
                 if (map[x][y + 1] == 0) {
-                    addPoint(&down, x * grid_cell_width, (y + 1) * grid_cell_height, SDL_TRUE, "grass_player.bmp");
+                    addPoint(&down, x * grid_cell_width, (y + 1) * grid_cell_height, SDL_TRUE, "grass_player1.bmp");
                 } else {
                     addPoint(&down, x * grid_cell_width, (y + 1) * grid_cell_height, SDL_TRUE, "grass_roman.bmp");
                 }
@@ -364,7 +364,7 @@ void manipleSwap() {
     for (int x = 0; x < legion.ranks[8] - 1; x++) {
         addTexture(player.x, player.y, "grass_roman.bmp");
         player.y++;
-        addTexture(player.x, player.y, "grass_player.bmp");
+        addTexture(player.x, player.y, "grass_player1.bmp");
         SDL_RenderPresent(renderer);
         SDL_Delay(1000);
     }
@@ -551,7 +551,7 @@ int main(int argc, char *argv[]) {
 
 
         // Draw player.
-        addTexture(player.x, player.y, "grass_player.bmp");
+        addTexture(player.x, player.y, "grass_player1.bmp");
 
         SDL_RenderPresent(renderer);
     }
