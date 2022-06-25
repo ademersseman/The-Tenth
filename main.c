@@ -39,6 +39,107 @@ Army legion;
 Army gauls;
 
 SDL_Renderer *renderer;
+
+void loadMenu() {
+    SDL_Surface* surface = SDL_LoadBMP("grass.bmp");
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_Rect tile = {
+        .x = 0,
+        .y = 0,
+        .w = window_width,
+        .h = window_height,
+    };
+    SDL_RenderCopy(renderer, texture, NULL, &tile);
+
+    int menuSelection = 0;
+    SDL_bool quitMenu = SDL_FALSE;
+    while(!quitMenu) {
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            switch(event.type) {
+                case SDL_KEYDOWN:
+                    switch (event.key.keysym.sym) {
+                        case SDLK_RETURN:
+                            switch (menuSelection) {
+                                case 0:
+                                    quitMenu = SDL_TRUE;
+                                    break;
+                                case 1:
+                                    quitMenu = SDL_TRUE;
+                                    quit = SDL_TRUE;
+                                    break;
+                            }
+                            break;
+                        case SDLK_w:
+                        case SDLK_UP:
+                            if (menuSelection != 0) {
+                                menuSelection--;
+                            }
+                            break;
+                        case SDLK_s:
+                        case SDLK_DOWN:
+                            if (menuSelection != 1) {
+                                menuSelection++;
+                            }
+                            break;
+                    }
+                    break;
+                case SDL_WINDOWEVENT:
+                    if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                        grid_cell_height = (int)((event.window.data2 - 1)/(double)grid_height);
+                        grid_cell_width = (int)((event.window.data1 - 1)/(double)grid_width);
+                        window_height = event.window.data2;
+                        window_width = event.window.data1;
+                    }
+                    break;
+                case SDL_QUIT:
+                    quit = SDL_TRUE;
+                    break;
+            }
+        }
+
+        if (menuSelection == 0) {
+            surface = SDL_LoadBMP("grass.bmp");
+            texture = SDL_CreateTextureFromSurface(renderer, surface);
+            tile.x = window_width/3,
+            tile.y = window_height/2,
+            tile.w = window_width/3,
+            tile.h = grid_cell_height,
+            SDL_RenderCopy(renderer, texture, NULL, &tile);
+        } else {
+            surface = SDL_LoadBMP("grass_attack.bmp");
+            texture = SDL_CreateTextureFromSurface(renderer, surface);
+            tile.x = window_width/3,
+            tile.y = window_height/2,
+            tile.w = window_width/3,
+            tile.h = grid_cell_height,
+            SDL_RenderCopy(renderer, texture, NULL, &tile);
+        }
+
+        if (menuSelection == 1) {
+            surface = SDL_LoadBMP("grass.bmp");
+            texture = SDL_CreateTextureFromSurface(renderer, surface);
+            tile.x = window_width/3,
+            tile.y = window_height/1.5,
+            tile.w = window_width/3,
+            tile.h = grid_cell_height,
+            SDL_RenderCopy(renderer, texture, NULL, &tile);
+        } else {
+            surface = SDL_LoadBMP("grass_attack.bmp");
+            texture = SDL_CreateTextureFromSurface(renderer, surface);
+            tile.x = window_width/3,
+            tile.y = window_height/1.5,
+            tile.w = window_width/3,
+            tile.h = grid_cell_height,
+            SDL_RenderCopy(renderer, texture, NULL, &tile);
+        }
+
+        SDL_RenderPresent(renderer);
+    }
+    SDL_FreeSurface(surface);
+    SDL_DestroyTexture(texture);
+}
+
 void addTexture(int x, int y, const char* file) {
     SDL_Surface* surface = SDL_LoadBMP(file);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
@@ -80,7 +181,7 @@ void block() {
     SDL_RenderPresent(renderer);
 }
 
-SDL_bool attack() {
+void attack() {
     switch(player.facing) {
         case 0:
             addTexture(player.x, player.y, "grass_attack.bmp");
@@ -100,7 +201,7 @@ void battleDelay(Uint32 delay) {
     Uint32 time = SDL_GetTicks() + delay;
     while (!SDL_TICKS_PASSED(SDL_GetTicks(), time)) {
         SDL_Event event;
-        while (SDL_PollEvent(&event) && event.type) {
+        while (SDL_PollEvent(&event)) {
             switch(event.type) {
                 case SDL_KEYDOWN:
                     switch (event.key.keysym.sym) {
@@ -114,12 +215,12 @@ void battleDelay(Uint32 delay) {
                     break;
                 case SDL_WINDOWEVENT:
                     if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                            grid_cell_height = (int)((event.window.data2 - 1)/(double)grid_height);
-                            grid_cell_width = (int)((event.window.data1 - 1)/(double)grid_width);
-                            window_height = event.window.data2;
-                            window_width = event.window.data1;
-                        }
-                        break;
+                        grid_cell_height = (int)((event.window.data2 - 1)/(double)grid_height);
+                        grid_cell_width = (int)((event.window.data1 - 1)/(double)grid_width);
+                        window_height = event.window.data2;
+                        window_width = event.window.data1;
+                    }
+                    break;
                 case SDL_QUIT:
                     quit = SDL_TRUE;
                     break;
@@ -189,16 +290,17 @@ void animateMove(Point *vertical, Point *horizontal, const char* file) {
                 addTextureNoScale(horIndex->x, horIndex->y, "grass.bmp");
                 addTextureNoScale(horIndex->dir ? horIndex->x - i * grid_cell_width/4: horIndex->x + i * grid_cell_width/4, horIndex->y, file);
             }
-            SDL_RenderPresent(renderer);
             if (vertIndex != NULL) {vertIndex = vertIndex->next;}
             if (horIndex != NULL) {horIndex = horIndex->next;}
         }
+        SDL_RenderPresent(renderer);
         battleDelay(30);
         free(vertIndex);
         free(horIndex);
     }
 }
 
+//does not work
 void addPoint(Point *head, int x, int y, SDL_bool dir) {
     Point *p = malloc(sizeof *p);
     p->x = x;
@@ -214,7 +316,12 @@ void gaulGapFill() {
         Point *down = NULL;
         for (int x = 0; x < grid_width; x++) {
             if (map[x][y] == 3 && map[x][y - 1] == 2) {
-                addPoint(down, x * grid_cell_width, (y - 1) * grid_cell_height, SDL_FALSE);
+                Point *p = malloc(sizeof *p);
+                p->x = x * grid_cell_width;
+                p->y = (y - 1) * grid_cell_height;
+                p->dir = SDL_FALSE;
+                p->next = down;
+                down = p;
                 map[x][y] = 2;
                 map[x][y - 1] = 3;
             }
@@ -348,11 +455,9 @@ void gaulDeath(int rank) {
 }
 
 void simulateBattlefield() {
-    SDL_bool gaulAttacking[grid_width];
-    SDL_bool romanAttacking[grid_width];
+    SDL_bool gaulAttacking[grid_width] = {SDL_FALSE};//index is SDL_TRUE when its section of line is attacking
+    SDL_bool romanAttacking[grid_width] = {SDL_FALSE};
     for (int x = 0; x < grid_width; x++) {
-        gaulAttacking[x] = SDL_FALSE;//index is SDL_TRUE when its section of line is attacking
-        romanAttacking[x] = SDL_FALSE;
         if (map[x][legion.frontLine] == 1 && map[x][gauls.frontLine] == 2) {
             if (rand()%101 > 80) {
                 addTexture(x, gauls.frontLine, "grass_attack.bmp");
@@ -366,7 +471,7 @@ void simulateBattlefield() {
         }
     }
 
-    battleDelay(1000);
+    battleDelay(500);
 
     for (int x = 0; x < grid_width; x++) {
         if (gaulAttacking[x] && gaulAttacking[x]) {
@@ -397,8 +502,8 @@ void simulateBattlefield() {
 }
 
 
-void battle(int window_width, int window_height) {
-    initBattleField(window_width, window_height);
+void battle() {
+    initBattleField();
     gaulAdvance();
     //battleDelay(1000);
     romanAdvance();
@@ -407,45 +512,34 @@ void battle(int window_width, int window_height) {
     //battleDelay(1000);
     gaulGapFill();
     //battleDelay(1000);
-    while (gauls.soldiers > 10) {
+    while (gauls.soldiers > 10 && !quit) {
         simulateBattlefield();
-        battleDelay(1000);
-        //romanGapFill();
-        battleDelay(1000);
-        //gaulGapFill();
-        battleDelay(1000);
     }
 }
 
 int main(int argc, char *argv[]) {
     srand(time(NULL));
-    // Dark theme.
-    SDL_Color grid_line_color = {44, 44, 44, 255}; // Dark grey
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Initialize SDL: %s",
-                     SDL_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Initialize SDL: %s", SDL_GetError());
         return EXIT_FAILURE;
     }
 
     SDL_Window *window;
-    if (SDL_CreateWindowAndRenderer(window_width, window_height, SDL_WINDOW_RESIZABLE, &window,
-                                    &renderer) < 0) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
-                     "Create window and renderer: %s", SDL_GetError());
+    if (SDL_CreateWindowAndRenderer(window_width, window_height, SDL_WINDOW_RESIZABLE, &window, &renderer) < 0) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Create window and renderer: %s", SDL_GetError());
         return EXIT_FAILURE;
     }
 
     SDL_SetWindowTitle(window, "SDL Grid");
-    SDL_DisplayMode current;
 
 
     player.blocking = SDL_FALSE;
     player.x = 8;
     player.y = 7;
 
-    //testing placing textures on grid
-    battle(window_width, window_height);
+    loadMenu();
+    battle();
 
     while (!quit) {
         SDL_Event event;
@@ -486,7 +580,7 @@ int main(int argc, char *argv[]) {
                         }
                         break;
                     case SDLK_f:
-                        SDL_SetRenderDrawColor(renderer, grid_line_color.r, grid_line_color.g, grid_line_color.b, grid_line_color.a);
+                        SDL_SetRenderDrawColor(renderer, 44, 44, 44, 255);
                         SDL_Rect range = {
                             .x = player.x * grid_cell_width - grid_cell_width,
                             .y = player.y * grid_cell_height - grid_cell_height,
@@ -528,18 +622,6 @@ int main(int argc, char *argv[]) {
 
         // Draw player.
         addTexture(player.x, player.y, "grass_player.bmp");
-
-        // Draw grid lines.
-        SDL_SetRenderDrawColor(renderer, grid_line_color.r, grid_line_color.g, grid_line_color.b, grid_line_color.a);
-
-        //draw vertical grid lines
-        for (int x = 0; x < 1 + grid_width * grid_cell_width; x += grid_cell_width) {
-            SDL_RenderDrawLine(renderer, x, 0, x, window_height);
-        }
-        //draw horizontal grid lines
-        for (int y = 0; y < 1 + grid_height * grid_cell_height; y += grid_cell_height) {
-            SDL_RenderDrawLine(renderer, 0, y, window_width, y);
-        }
 
         SDL_RenderPresent(renderer);
     }

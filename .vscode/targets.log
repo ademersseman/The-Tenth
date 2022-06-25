@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Jun 24 19:34:58 2022
+# Make data base, printed on Sat Jun 25 11:43:26 2022
 
 # Variables
 
@@ -17,7 +17,7 @@ GDK_BACKEND = x11
 # environment
 LC_ALL = C
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-88afba8a-046c-429e-b5fc-483e9b9ec947.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-fff3cb7a-78c3-473d-bf40-f35c8c2b9bbc.sock
 # environment
 VSCODE_CWD = /home/alan
 # environment
@@ -71,7 +71,7 @@ APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
 # environment
 MFLAGS = -pqrR
 # environment
-SSH_AUTH_SOCK = /tmp/ssh-rrBNaXdhaZgA/agent.1979
+SSH_AUTH_SOCK = /tmp/ssh-pKbvETHlFM6z/agent.2072
 # default
 .SHELLFLAGS := -c
 # environment
@@ -87,7 +87,7 @@ MAKEFILE_LIST :=
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 2868
+VSCODE_PID = 14976
 # environment
 XDG_SESSION_TYPE = x11
 # automatic
@@ -95,7 +95,6 @@ XDG_SESSION_TYPE = x11
 # environment
 XDG_DATA_HOME = /home/alan/.local/share
 # automatic
- 
 *F = $(notdir $*)
 # environment
 QT_QPA_PLATFORMTHEME = lxqt
@@ -106,6 +105,7 @@ DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # automatic
 <D = $(patsubst %/,%,$(dir $<))
 # environment
+ 
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
@@ -170,7 +170,7 @@ GTK_MODULES = gail:atk-bridge
 # default
 MAKE_VERSION := 4.3
 # environment
-SSH_AGENT_PID = 2027
+SSH_AGENT_PID = 2121
 # environment
 _ = /usr/bin/code
 # environment
@@ -178,6 +178,7 @@ XDG_RUNTIME_DIR = /run/user/1000
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
+ 
 COLORTERM = truecolor
 # environment
 GTK_OVERLAY_SCROLLING = 0
@@ -193,7 +194,6 @@ HOME = /home/alan
 ELECTRON_RUN_AS_NODE = 1
 # environment
 VSCODE_IPC_HOOK = /run/user/1000/vscode-ce38759a-1.68.1-main.sock
- 
 # environment
 TERM = xterm-256color
 # environment
@@ -223,6 +223,7 @@ XDG_MENU_PREFIX = lxqt-
 
 # Directories
 
+ 
 # . (device 2050, inode 10354915): 14 files, no impossibilities.
 
 # 14 files, no impossibilities in 1 directories.
@@ -263,6 +264,7 @@ makefile:
 # Not a target:
 GNUmakefile:
 #  Implicit rule search has been done.
+ 
 #  File does not exist.
 #  File has been updated.
 #  Failed to be updated.
@@ -270,7 +272,6 @@ GNUmakefile:
 # files hash-table stats:
 # Load=6/1024=1%, Rehash=0, Collisions=0/15=0%
 # VPATH Search Paths
- 
 
 # No 'vpath' search paths.
 
@@ -282,6 +283,6 @@ GNUmakefile:
 # strcache performance: lookups = 25 / hit rate = 12%
 # hash-table stats:
 # Load=22/8192=0%, Rehash=0, Collisions=0/25=0%
-# Finished Make data base on Fri Jun 24 19:34:58 2022
+# Finished Make data base on Sat Jun 25 11:43:26 2022
 
  
