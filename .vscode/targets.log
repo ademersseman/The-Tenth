@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat Jun 25 22:19:54 2022
+# Make data base, printed on Sun Jun 26 14:59:10 2022
 
 # Variables
 
@@ -17,7 +17,7 @@ GDK_BACKEND = x11
 # environment
 LC_ALL = C
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-0591e5b7-5444-4be7-b6cb-5fb1537e95ad.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-f240ae20-daa4-46de-b01b-4f113159a002.sock
 # environment
 VSCODE_CWD = /home/alan
 # environment
@@ -33,7 +33,7 @@ VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # default
 .VARIABLES := 
 # environment
-PWD = /home/alan/The-Tenth
+PWD = /home/alan/Desktop/The-Tenth
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # environment
@@ -61,7 +61,7 @@ COLORFGBG = 15;0
 # makefile
 MAKEFLAGS = pqrR
 # makefile
-CURDIR := /home/alan/The-Tenth
+CURDIR := /home/alan/Desktop/The-Tenth
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
@@ -71,7 +71,7 @@ APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
 # environment
 MFLAGS = -pqrR
 # environment
-SSH_AUTH_SOCK = /tmp/ssh-TqmRHX6HVg0U/agent.1642
+SSH_AUTH_SOCK = /tmp/ssh-FobkvsS50c58/agent.3921
 # default
 .SHELLFLAGS := -c
 # environment
@@ -87,7 +87,7 @@ MAKEFILE_LIST :=
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 2618
+VSCODE_PID = 4297
 # environment
 XDG_SESSION_TYPE = x11
 # automatic
@@ -169,7 +169,7 @@ GTK_MODULES = gail:atk-bridge
 # default
 MAKE_VERSION := 4.3
 # environment
-SSH_AGENT_PID = 1691
+SSH_AGENT_PID = 3970
 # environment
 _ = /usr/bin/code
 # environment
@@ -213,7 +213,6 @@ ELECTRON_NO_ATTACH_CONSOLE = 1
 # environment
 XDG_MENU_PREFIX = lxqt-
 # variable set hash-table stats:
- 
 # Load=100/1024=10%, Rehash=0, Collisions=4/127=3%
 
 # Pattern-specific Variable Values
@@ -222,9 +221,9 @@ XDG_MENU_PREFIX = lxqt-
 
 # Directories
 
-# . (device 2050, inode 10354915): 23 files, no impossibilities.
+# . (device 2050, inode 10354915): 26 files, no impossibilities.
 
-# 23 files, no impossibilities in 1 directories.
+# 26 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -274,12 +273,12 @@ GNUmakefile:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 31 / storage = 436 B / avg = 14 B
-# current buf: size = 8162 B / used = 436 B / count = 31 / avg = 14 B
+# strcache buffers: 1 (0) / strings = 34 / storage = 494 B / avg = 14 B
+# current buf: size = 8162 B / used = 494 B / count = 34 / avg = 14 B
 
-# strcache performance: lookups = 34 / hit rate = 8%
+# strcache performance: lookups = 37 / hit rate = 8%
 # hash-table stats:
-# Load=31/8192=0%, Rehash=0, Collisions=0/34=0%
-# Finished Make data base on Sat Jun 25 22:19:54 2022
+# Load=34/8192=0%, Rehash=0, Collisions=0/37=0%
+# Finished Make data base on Sun Jun 26 14:59:10 2022
 
  

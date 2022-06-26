@@ -40,6 +40,7 @@ Army legion;
 Army gauls;
 
 SDL_Renderer *renderer;//renderer
+SDL_Window *window;
 
 //for entering raw textures
 void addTextureBlock(int x, int y, int w, int h, const char *file) {
@@ -115,7 +116,7 @@ void loadMenu() {
             }
         }
         //load background
-        SDL_Surface* surface = SDL_LoadBMP("grass.bmp");
+        SDL_Surface* surface = SDL_LoadBMP("menu_background.bmp");
         SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
         SDL_Rect tile = {
             .x = 0,
@@ -125,17 +126,27 @@ void loadMenu() {
         };
         SDL_RenderCopy(renderer, texture, NULL, &tile);
 
-
+        tile.w = window_width/3 + 10;
+        tile.h = grid_cell_height + 10;
+        SDL_SetRenderDrawColor(window, 255, 255, 255, 255);
         if (menuSelection == 0) {
-            addTextureBlock(window_width/3, window_height/2, window_width/3, grid_cell_height, "grass.bmp");//play button highlighted
+            tile.x = window_width/3 - 5;
+            tile.y = window_height/2 - 5;
+            SDL_RenderDrawRect(window, &tile);
+            SDL_RenderFillRect(renderer, &tile);
+            addTextureBlock(window_width/3, window_height/2, window_width/3, grid_cell_height, "new_game_banner.bmp");//play button highlighted
         } else {
-            addTextureBlock(window_width/3, window_height/2, window_width/3, grid_cell_height, "grass_attack.bmp");//play button
+            addTextureBlock(window_width/3, window_height/2, window_width/3, grid_cell_height, "new_game_banner.bmp");//play button
         }
 
         if (menuSelection == 1) {
-            addTextureBlock(window_width/3, window_height/1.5, window_width/3, grid_cell_height, "grass.bmp");//quit button highlighted
+            tile.x = window_width/3 - 5;
+            tile.y = window_height/1.5 - 5;
+            SDL_RenderDrawRect(window, &tile);
+            SDL_RenderFillRect(renderer, &tile);
+            addTextureBlock(window_width/3, window_height/1.5, window_width/3, grid_cell_height, "quit_game_banner.bmp");//quit button highlighted
         } else {
-            addTextureBlock(window_width/3, window_height/1.5, window_width/3, grid_cell_height, "grass_attack.bmp");//quit button
+            addTextureBlock(window_width/3, window_height/1.5, window_width/3, grid_cell_height, "quit_game_banner.bmp");//quit button
         }
 
         SDL_RenderPresent(renderer);
@@ -162,11 +173,9 @@ void attack() {
     switch(player.facing) {
         case 0:
             addTexture(player.x, player.y, "grass_player_attack.bmp");
+            player.blocking = SDL_FALSE;
             if (map[player.x][player.y - 1] == 2) {
-                gauls.ranks[player.x]--;
-                gauls.soldiers--;
-                map[player.x][gauls.frontLine] = 3;
-                addTexture(player.x, gauls.frontLine, "grass.bmp");
+                gaulDeath(player.x);
             }
             SDL_RenderPresent(renderer);
             SDL_Delay(500);
@@ -195,10 +204,12 @@ void battleDelay(Uint32 delay) {
                     break;
                 case SDL_WINDOWEVENT:
                     if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                        grid_cell_height = (int)((event.window.data2 - 1)/(double)grid_height);
-                        grid_cell_width = (int)((event.window.data1 - 1)/(double)grid_width);
+                        grid_cell_height = event.window.data2/grid_height;
+                        grid_cell_width = event.window.data1/grid_width;
                         window_height = event.window.data2;
                         window_width = event.window.data1;
+
+                        refreshScene();
                     }
                     break;
                 case SDL_QUIT:
@@ -327,7 +338,29 @@ void romanGapFill() {
         }
         animateMove(down, left);
     }
-}   
+}
+
+void refreshScene() {
+    for (int x = 0; x < grid_width; x++) {
+        for (int y = 0; y < grid_height; y++) {
+            switch(map[x][y]) {
+                case 0:
+                    addTexture(x, y, "grass_player.bmp");
+                    break;
+                case 1:
+                    addTexture(x, y, "grass_roman.bmp");
+                    break;
+                case 2:
+                    addTexture(x, y, "grass_gaul.bmp");
+                    break;
+                case 3:
+                    addTexture(x, y, "grass.bmp");
+                    break;
+            }
+        }
+    }
+    SDL_RenderPresent(renderer);
+}
 
 //adds groundcover textures and updates map
 void addGroundcover() {
@@ -454,7 +487,6 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-    SDL_Window *window;
     if (SDL_CreateWindowAndRenderer(window_width, window_height, SDL_WINDOW_RESIZABLE, &window, &renderer) < 0) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Create window and renderer: %s", SDL_GetError());
         return EXIT_FAILURE;
