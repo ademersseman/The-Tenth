@@ -151,7 +151,7 @@ void block() {
         addTexture(player.x, player.y, "grass_player_blocking.bmp");
         player.mobile = SDL_FALSE;
     } else {
-        addTexture(player.x, player.y, "grass_player.bmp");
+        addTexture(player.x, player.y, "grass_player.jpg");
         player.mobile = SDL_TRUE;
     }
     SDL_RenderPresent(renderer);
@@ -396,7 +396,7 @@ void simulateBattlefield() {
                 gaulAttacking[x] = SDL_TRUE;
             }
             if (rand()%101 > 80) {
-                addTexture(x, legion.frontLine, "grass_attack.bmp");
+                addTexture(x, legion.frontLine, "grass_roman_attack.bmp");
                 romanAttacking[x] = SDL_TRUE;
             }
             SDL_RenderPresent(renderer);
